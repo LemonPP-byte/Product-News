@@ -1,5 +1,6 @@
 """Content analysis using AI."""
 
+import asyncio
 import json
 from typing import List
 from tenacity import retry, stop_after_attempt, wait_exponential
@@ -32,21 +33,32 @@ class ContentAnalyzer:
         ) as progress:
             task = progress.add_task("Analyzing", total=len(items))
 
+            # Process in batches with parallel execution
             for i in range(0, len(items), batch_size):
                 batch = items[i:i + batch_size]
+
+                # Analyze batch items in parallel
+                tasks = []
                 for item in batch:
-                    try:
-                        await self._analyze_item(item)
-                        analyzed_items.append(item)
-                    except Exception as e:
-                        print(f"Error analyzing item {item.id}: {e}")
-                        item.ai_score = 0.0
-                        item.ai_reason = "Analysis failed"
-                        item.ai_summary = item.title
-                        analyzed_items.append(item)
-                    progress.advance(task)
+                    tasks.append(self._analyze_item_safe(item))
+
+                # Wait for all items in batch to complete
+                await asyncio.gather(*tasks)
+
+                analyzed_items.extend(batch)
+                progress.advance(task, advance=len(batch))
 
         return analyzed_items
+
+    async def _analyze_item_safe(self, item: ContentItem) -> None:
+        """Safely analyze an item with error handling."""
+        try:
+            await self._analyze_item(item)
+        except Exception as e:
+            print(f"Error analyzing item {item.id}: {e}")
+            item.ai_score = 0.0
+            item.ai_reason = "Analysis failed"
+            item.ai_summary = item.title
 
     @retry(
         stop=stop_after_attempt(3),
