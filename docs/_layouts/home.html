@@ -79,9 +79,30 @@
                     <a href="{{ today_zh_post.url | relative_url }}" class="view-full">查看完整版 →</a>
                 </div>
 
-                <!-- Display product list -->
+                <!-- Display expandable product list -->
                 <div class="today-product-preview">
-                    {{ today_zh_post.content | split: "---" | first | markdownify }}
+                    {% assign content_parts = today_zh_post.content | split: "---" %}
+                    {% if content_parts.size >= 3 %}
+                        <!-- Summary quote -->
+                        {{ content_parts[0] | markdownify }}
+
+                        <!-- Product list with details -->
+                        {% assign products_section = content_parts[2] | split: '<a id="item-' %}
+                        {% for product in products_section offset:1 %}
+                            {% assign product_parts = product | split: '---' %}
+                            {% if product_parts.size > 0 %}
+                                <div class="product-expandable">
+                                    <div class="product-header" onclick="this.parentElement.classList.toggle('expanded')">
+                                        <span class="expand-icon">▶</span>
+                                        {{ product_parts[0] | markdownify }}
+                                    </div>
+                                    <div class="product-details">
+                                        {{ product_parts[0] | markdownify }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             {% endif %}
@@ -105,9 +126,30 @@
                     <a href="{{ today_en_post.url | relative_url }}" class="view-full">View Full Report →</a>
                 </div>
 
-                <!-- Display product list -->
+                <!-- Display expandable product list -->
                 <div class="today-product-preview">
-                    {{ today_en_post.content | split: "---" | first | markdownify }}
+                    {% assign content_parts = today_en_post.content | split: "---" %}
+                    {% if content_parts.size >= 3 %}
+                        <!-- Summary quote -->
+                        {{ content_parts[0] | markdownify }}
+
+                        <!-- Product list with details -->
+                        {% assign products_section = content_parts[2] | split: '<a id="item-' %}
+                        {% for product in products_section offset:1 %}
+                            {% assign product_parts = product | split: '---' %}
+                            {% if product_parts.size > 0 %}
+                                <div class="product-expandable">
+                                    <div class="product-header" onclick="this.parentElement.classList.toggle('expanded')">
+                                        <span class="expand-icon">▶</span>
+                                        {{ product_parts[0] | markdownify }}
+                                    </div>
+                                    <div class="product-details">
+                                        {{ product_parts[0] | markdownify }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             {% endif %}
