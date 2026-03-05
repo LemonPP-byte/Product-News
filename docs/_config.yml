@@ -1,4 +1,3 @@
-theme: jekyll-theme-cayman
 title: Product News Daily
 description: AI-curated daily digest of consumer products and market trends
 baseurl: "/Product-News" # the subpath of your site, e.g. /blog
