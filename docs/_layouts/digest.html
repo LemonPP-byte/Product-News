@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ site.title }}</title>
+    <title>{{ page.title | default: site.title }}</title>
     <link rel="stylesheet" href="{{ '/assets/css/digest-style.css' | relative_url }}">
 </head>
 <body>
@@ -26,9 +26,17 @@
                 <div class="date-list" id="dateList">
                     {% assign en_posts = site.posts | where: "lang", "en" %}
                     {% for post in en_posts limit:30 %}
-                    <a href="#" class="date-item {% if forloop.first %}active{% endif %}"
-                       data-date="{{ post.date | date: '%Y-%m-%d' }}"
-                       onclick="loadDate('{{ post.date | date: '%Y-%m-%d' }}', '{{ post.url | relative_url }}'); return false;">
+                    {% assign is_current = false %}
+                    {% if page.date %}
+                        {% assign page_date = page.date | date: "%Y-%m-%d" %}
+                        {% assign post_date = post.date | date: "%Y-%m-%d" %}
+                        {% if page_date == post_date %}
+                            {% assign is_current = true %}
+                        {% endif %}
+                    {% elsif forloop.first %}
+                        {% assign is_current = true %}
+                    {% endif %}
+                    <a href="{{ post.url | relative_url }}" class="date-item {% if is_current %}active{% endif %}">
                         {{ post.date | date: "%b %d" }}
                     </a>
                     {% endfor %}
@@ -42,14 +50,16 @@
     <section class="product-content-section">
         <div class="container">
             <div id="productContent">
-                {% assign today = site.time | date: "%Y-%m-%d" %}
-                {% assign en_posts = site.posts | where: "lang", "en" %}
-                {% assign latest_post = en_posts | first %}
-
-                {% if latest_post %}
-                    {% include product-list.html post=latest_post %}
+                {% if page.content %}
+                    {% include product-list.html post=page %}
                 {% else %}
-                    <p class="no-content">No products available yet.</p>
+                    {% assign en_posts = site.posts | where: "lang", "en" %}
+                    {% assign latest_post = en_posts | first %}
+                    {% if latest_post %}
+                        {% include product-list.html post=latest_post %}
+                    {% else %}
+                        <p class="no-content">No products available yet.</p>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
@@ -71,17 +81,6 @@
                 left: direction * scrollAmount,
                 behavior: 'smooth'
             });
-        }
-
-        function loadDate(date, url) {
-            // Update active state
-            document.querySelectorAll('.date-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            // Load content via AJAX or redirect
-            window.location.href = url;
         }
     </script>
 </body>
