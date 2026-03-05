@@ -94,14 +94,57 @@
       {
         "name": "Hypebeast",
         "url": "https://hypebeast.com/feed",
-        "enabled": true,
-        "category": "fashion-culture"
+        "enabled": false,
+        "category": "fashion-culture",
+        "comment": "Disabled - reducing fashion/sneaker content"
       },
       {
         "name": "Cool Hunting",
         "url": "https://coolhunting.com/feed/",
         "enabled": true,
         "category": "design-trends"
+      },
+      {
+        "name": "Kickstarter Popular",
+        "url": "https://www.kickstarter.com/discover/advanced.rss?state=live&sort=popularity",
+        "enabled": true,
+        "category": "crowdfunding"
+      },
+      {
+        "name": "Kickstarter Design",
+        "url": "https://www.kickstarter.com/discover/categories/design.rss?sort=popularity",
+        "enabled": true,
+        "category": "crowdfunding"
+      },
+      {
+        "name": "Kickstarter Tech",
+        "url": "https://www.kickstarter.com/discover/categories/technology.rss?sort=popularity",
+        "enabled": true,
+        "category": "crowdfunding"
+      },
+      {
+        "name": "Yanko Design",
+        "url": "https://www.yankodesign.com/feed/",
+        "enabled": true,
+        "category": "design-innovation"
+      },
+      {
+        "name": "Design Milk",
+        "url": "https://design-milk.com/feed/",
+        "enabled": true,
+        "category": "design-innovation"
+      },
+      {
+        "name": "This Is Why I'm Broke",
+        "url": "https://www.thisiswhyimbroke.com/feed/",
+        "enabled": true,
+        "category": "unique-products"
+      },
+      {
+        "name": "Uncommon Goods Blog",
+        "url": "https://www.uncommongoods.com/blog/feed/",
+        "enabled": true,
+        "category": "unique-products"
       }
     ],
     "reddit": {
@@ -181,27 +224,75 @@
         },
         {
           "subreddit": "streetwear",
-          "enabled": true,
+          "enabled": false,
           "sort": "hot",
           "time_filter": "day",
           "fetch_limit": 10,
-          "min_score": 100
+          "min_score": 100,
+          "comment": "Disabled - reducing fashion/sneaker content"
         },
         {
           "subreddit": "sneakers",
-          "enabled": true,
+          "enabled": false,
           "sort": "hot",
           "time_filter": "day",
           "fetch_limit": 10,
-          "min_score": 100
+          "min_score": 100,
+          "comment": "Disabled - reducing fashion/sneaker content"
         },
         {
           "subreddit": "MakeupAddiction",
-          "enabled": true,
+          "enabled": false,
           "sort": "hot",
           "time_filter": "day",
           "fetch_limit": 10,
-          "min_score": 100
+          "min_score": 100,
+          "comment": "Disabled - reducing fashion/beauty content"
+        },
+        {
+          "subreddit": "INEEEEDIT",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 20,
+          "min_score": 100,
+          "comment": "Must-buy unique products"
+        },
+        {
+          "subreddit": "IneeeedIt",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 20,
+          "min_score": 100,
+          "comment": "Interesting products people want"
+        },
+        {
+          "subreddit": "InterestingAsFuck",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 15,
+          "min_score": 200,
+          "comment": "Fascinating products and innovations"
+        },
+        {
+          "subreddit": "SpecializedTools",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 15,
+          "min_score": 100,
+          "comment": "Niche professional tools"
+        },
+        {
+          "subreddit": "DesignPorn",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 15,
+          "min_score": 150,
+          "comment": "Exceptional product design"
         },
         {
           "subreddit": "gadgets",
