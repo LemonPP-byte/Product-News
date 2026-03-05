@@ -16,15 +16,20 @@
                 <div class="nav-links">
                     <a href="{{ '/' | relative_url }}">Home</a>
                     <a href="https://github.com/LemonPP-byte/Product-News">About</a>
-                    <a href="#digest" class="cta-button">View Digest</a>
+                    <a href="#today" class="cta-button">Today's Digest</a>
                 </div>
             </nav>
 
             <div class="hero-text">
-                <h1>Product<br>Horizon</h1>
+                <h1>Product Horizon</h1>
                 <p class="tagline">AI-curated daily digest of niche products and market trends</p>
             </div>
+        </div>
+    </section>
 
+    <!-- Features Bar -->
+    <section class="features-bar">
+        <div class="container">
             <div class="features">
                 <div class="feature-item">
                     <span class="feature-number">#01</span>
@@ -46,25 +51,74 @@
         </div>
     </section>
 
-    <!-- Daily Digest Section -->
+    <!-- Today's Digest Section -->
+    <section id="today" class="today-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Today's Product Intelligence</h2>
+                <p class="today-date">{{ site.time | date: "%Y-%m-%d" }}</p>
+            </div>
+
+            <!-- Today's Chinese Digest -->
+            {% assign today = site.time | date: "%Y-%m-%d" %}
+            {% assign today_zh_post = site.posts | where: "lang", "zh" | where_exp: "post", "post.date | date: '%Y-%m-%d' == today" | first %}
+
+            {% if today_zh_post %}
+            <div class="today-digest">
+                <h3 class="today-title">
+                    <span class="badge">NEW</span>
+                    <span class="accent">今日中文速递</span>
+                </h3>
+                <a href="{{ today_zh_post.url | relative_url }}" class="today-card">
+                    <span class="card-date">{{ today_zh_post.date | date: "%Y-%m-%d" }}</span>
+                    <span class="card-title">查看今日产品推荐 →</span>
+                </a>
+            </div>
+            {% endif %}
+
+            <!-- Today's English Digest -->
+            {% assign today_en_post = site.posts | where: "lang", "en" | where_exp: "post", "post.date | date: '%Y-%m-%d' == today" | first %}
+
+            {% if today_en_post %}
+            <div class="today-digest">
+                <h3 class="today-title">
+                    <span class="badge">NEW</span>
+                    <span class="accent">Today's English Digest</span>
+                </h3>
+                <a href="{{ today_en_post.url | relative_url }}" class="today-card">
+                    <span class="card-date">{{ today_en_post.date | date: "%Y-%m-%d" }}</span>
+                    <span class="card-title">View Today's Products →</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Archive Section -->
     <section id="digest" class="digest-section">
         <div class="container">
             <div class="section-header">
-                <h2>Daily Product Intelligence</h2>
-                <p>Discover trending products, market opportunities, and consumer insights</p>
+                <h2>Archive</h2>
+                <p>Browse previous daily digests</p>
             </div>
 
-            <!-- Chinese Digest -->
+            <!-- Chinese Archive -->
             <div class="digest-block">
                 <h3 class="digest-title">
-                    <span class="accent">中文速递</span>
-                    <span class="subtitle">Chinese Digest</span>
+                    <span class="accent">中文速递归档</span>
+                    <span class="subtitle">Chinese Archive</span>
                 </h3>
                 <ul class="post-list">
                     {% assign zh_posts = site.posts | where: "lang", "zh" %}
                     {% for post in zh_posts limit:20 %}
-                    <li class="post-item">
+                    {% assign post_date = post.date | date: "%Y-%m-%d" %}
+                    {% assign is_today = false %}
+                    {% if post_date == today %}
+                        {% assign is_today = true %}
+                    {% endif %}
+                    <li class="post-item {% if is_today %}today{% endif %}">
                         <a href="{{ post.url | relative_url }}">
+                            {% if is_today %}<span class="today-badge">今天</span>{% endif %}
                             <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
                             <span class="post-arrow">→</span>
                         </a>
@@ -75,17 +129,23 @@
                 </ul>
             </div>
 
-            <!-- English Digest -->
+            <!-- English Archive -->
             <div class="digest-block">
                 <h3 class="digest-title">
-                    <span class="accent">English Digest</span>
-                    <span class="subtitle">Daily Updates</span>
+                    <span class="accent">English Archive</span>
+                    <span class="subtitle">Previous Digests</span>
                 </h3>
                 <ul class="post-list">
                     {% assign en_posts = site.posts | where: "lang", "en" %}
                     {% for post in en_posts limit:20 %}
-                    <li class="post-item">
+                    {% assign post_date = post.date | date: "%Y-%m-%d" %}
+                    {% assign is_today = false %}
+                    {% if post_date == today %}
+                        {% assign is_today = true %}
+                    {% endif %}
+                    <li class="post-item {% if is_today %}today{% endif %}">
                         <a href="{{ post.url | relative_url }}">
+                            {% if is_today %}<span class="today-badge">Today</span>{% endif %}
                             <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
                             <span class="post-arrow">→</span>
                         </a>
